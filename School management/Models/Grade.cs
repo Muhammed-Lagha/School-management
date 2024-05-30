@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace School_management.Model;
+namespace School_management.Models;
 
 public partial class Grade
 {

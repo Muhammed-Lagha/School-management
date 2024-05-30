@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace School_management.Model;
+namespace School_management.Models;
 
 public partial class Teacher
 {
@@ -16,6 +16,8 @@ public partial class Teacher
     public byte[]? ProfilePicture { get; set; }
 
     public DateOnly BirthDate { get; set; }
+
+    public string Password { get; set; } = null!;
 
     public virtual ICollection<TeacherGrade> TeacherGrades { get; set; } = new List<TeacherGrade>();
 }

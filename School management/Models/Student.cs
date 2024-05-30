@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace School_management.Model;
+namespace School_management.Models;
 
 public partial class Student
 {
@@ -16,6 +16,8 @@ public partial class Student
     public byte[]? ProfilePicture { get; set; }
 
     public int GradeId { get; set; }
+
+    public string Password { get; set; } = null!;
 
     public virtual Grade Grade { get; set; } = null!;
 }

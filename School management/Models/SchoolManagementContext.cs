@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace School_management.Model;
+namespace School_management.Models;
 
 public partial class SchoolManagementContext : DbContext
 {
@@ -63,6 +63,9 @@ public partial class SchoolManagementContext : DbContext
             entity.Property(e => e.LastName)
                 .HasMaxLength(50)
                 .HasColumnName("last_name");
+            entity.Property(e => e.Password)
+                .HasMaxLength(255)
+                .HasColumnName("password");
             entity.Property(e => e.ProfilePicture).HasColumnName("profile_picture");
 
             entity.HasOne(d => d.Grade).WithMany(p => p.Students)
@@ -109,6 +112,9 @@ public partial class SchoolManagementContext : DbContext
             entity.Property(e => e.NiNo)
                 .HasMaxLength(50)
                 .HasColumnName("ni_no");
+            entity.Property(e => e.Password)
+                .HasMaxLength(255)
+                .HasColumnName("password");
             entity.Property(e => e.ProfilePicture).HasColumnName("profile_picture");
         });
 

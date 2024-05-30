@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using School_management.Model;
+using School_management.Models;
 using System.Security.Claims;
 
 namespace School_management.Controllers
