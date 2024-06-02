@@ -15,18 +15,6 @@ namespace School_management.Controllers.Teacher_Controller
     [ApiController]
     public class TeachersRegistrationController : ControllerBase
     {
-        public static Teacher teaher = new Teacher();
-
-        [HttpPost("register")]
-        public async Task<ActionResult<Teacher>> Register([FromBody] Teacher teacher)
-        {
-            try
-            {
-               
-            }
-            catch (Exception ex) { }
-        }
-
         [HttpPost("login")]
         public async Task<ActionResult<ServiceResponse<Teacher>>> Login([FromBody] LoginTeacherRequests loginTeacherRequests)
         {
@@ -39,6 +27,26 @@ namespace School_management.Controllers.Teacher_Controller
             {
                 var serviceResponse = new ServiceResponse<Teacher>(null!, false, ex.Message, null!);
                 return BadRequest(serviceResponse);
+            }
+        }
+
+        [HttpPost("regiser")]
+        public async Task<ActionResult<ServiceResponse<Teacher>>> Registration([FromBody] CreateTeacher createTeacher)
+        {
+            try
+            {
+                AccessMethods.GenerateHash(createTeacher.Passwrod); // <= 
+                var firstName = createTeacher.FirstName;
+                var lastName = createTeacher.LastName;
+                var password = createTeacher.Passwrod;
+                var nino = createTeacher.NeNo;
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("Erorr");
             }
         }
     }

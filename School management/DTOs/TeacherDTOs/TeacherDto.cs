@@ -10,6 +10,8 @@ namespace School_management.DTOs
 
         [Required] public string LastName { get; internal set; } = string.Empty;
 
+        [Required] public string NiNo {  get; set; } = string.Empty;
+
         [Required] public required string Password { get; set; } = string.Empty;
     }
 }

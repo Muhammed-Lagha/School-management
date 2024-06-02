@@ -1,4 +1,5 @@
-﻿using School_management.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using School_management.Models;
 
 namespace School_management.Repositories.Teacher_Repository
 {
@@ -7,7 +8,7 @@ namespace School_management.Repositories.Teacher_Repository
         public static async Task<Teacher> GetTeacherByNiNo(string NiNo)
         {
             var db = new SchoolManagementContext();
-            var teacher = await db.Teachers.Where(x => x.NiNo == NiNo);
+            var teacher = await db.Teachers.Where(x => x.NiNo == NiNo).FirstOrDefaultAsync();
 
             if (teacher == null)
             {

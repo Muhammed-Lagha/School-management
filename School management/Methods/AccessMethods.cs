@@ -1,15 +1,15 @@
-﻿using Org.BouncyCastle.Crypto.Generators;
-using School_management.Models;
-using System.Security.Cryptography;
+﻿using School_management.Models;
 
 namespace School_management.Methods
 {
-    public class AccessMethods
+    public class AccessMethods 
     {
-        public static async Task VerifyPassword(Teacher teacher, string clientPassword)
+
+
+        public static async Task VerifyPass(Teacher teacher, string clientPassword)
         {
 
-            bool isMatch = BCrypt.Equals(teacher.Password, clientPassword);
+            bool isMatch = BCrypt.Net.BCrypt.Verify(clientPassword, teacher.Password);
 
             if (!isMatch)
             {
@@ -19,13 +19,8 @@ namespace School_management.Methods
 
         public string GenerateHash(string password)
         {
-            //using (var hmac = new HMACSHA512())
-            //{
-            //    passwordSalt = hmac.Key;
-            //    passwordHashed = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
-            //}
-            string salt = BCrypt.Net.BCrypt.GenerateSalt(); // Generate a random salt
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, salt); // Generate the hash
+            string salt = BCrypt.Net.BCrypt.GenerateSalt(); 
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, salt);
 
             return hashedPassword;
         }
