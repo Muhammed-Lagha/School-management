@@ -1,8 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Exchange.WebServices.Data;
-using Org.BouncyCastle.Crypto.Generators;
+﻿using Microsoft.AspNetCore.Mvc;
 using School_management.DTOs;
 using School_management.DTOs.RequestDTOs;
 using School_management.Methods;
@@ -30,18 +26,29 @@ namespace School_management.Controllers.Teacher_Controller
             }
         }
 
-        [HttpPost("regiser")]
+        [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ServiceResponse<Teacher>>> Registration([FromBody] CreateTeacher createTeacher)
         {
             try
             {
-                AccessMethods.GenerateHash(createTeacher.Passwrod); // <= 
-                var firstName = createTeacher.FirstName;
-                var lastName = createTeacher.LastName;
-                var password = createTeacher.Passwrod;
-                var nino = createTeacher.NeNo;
+                var db = new SchoolManagementContext();
 
-                return Ok();
+                if (createTeacher == null)
+                {
+                    return BadRequest();
+                }
+                if (createTeacher.Id > 0)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
+                // await AccessMethods.GenerateHash(createTeacher.Passwrod); // <= *
+                createTeacher.Id = db.Teachers.OrderByDescending(u => u.Id ).FirstOrDefault().Id + 1;
+
+                var serviceResponse = new ServiceResponse<CreateTeacher>(createTeacher, true, "");
+                return Ok(serviceResponse);
             }
             catch (Exception ex)
             {
