@@ -13,5 +13,7 @@ namespace School_management.DTOs
         [Required] public string NiNo {  get; set; } = string.Empty;
 
         [Required] public required string Password { get; set; } = string.Empty;
+
+        [Required] public required string BirthDate { get; set; } = string.Empty;
     }
 }

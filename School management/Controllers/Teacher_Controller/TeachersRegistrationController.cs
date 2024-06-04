@@ -29,7 +29,6 @@ namespace School_management.Controllers.Teacher_Controller
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<ServiceResponse<Teacher>>> Registration([FromBody] CreateTeacher createTeacher)
         {
             try
@@ -37,6 +36,7 @@ namespace School_management.Controllers.Teacher_Controller
                 var db = new SchoolManagementContext();
 
                 string hashedPassword = AccessMethods.GenerateHash(createTeacher.Passwrod);
+                DateOnly birthDate = ParseDate.ParseDateOnly(createTeacher.BirthDate);
 
                 Teacher teacher = new Teacher
                 {
@@ -44,7 +44,7 @@ namespace School_management.Controllers.Teacher_Controller
                     LastName = createTeacher.LastName,
                     NiNo = createTeacher.NeNo,
                     Password = hashedPassword,
-                    BirthDate = new DateOnly()
+                    BirthDate = birthDate,
                 };
 
                 db.Add(teacher);

@@ -12,5 +12,6 @@
         public string LastName { get; set; } = string.Empty ;
         public string NeNo { get; set; }  = string.Empty;
         public string Passwrod { get; set; } = string.Empty;
+        public string BirthDate {  get; set; } = string.Empty;
     }
 }
