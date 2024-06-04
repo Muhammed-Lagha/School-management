@@ -56,7 +56,7 @@ namespace School_management.Controllers.Teacher_Controller
             catch (Exception ex)
             {
 
-                throw new Exception("Erorr" ,ex);
+                return BadRequest(ex);
             }
         }
     }

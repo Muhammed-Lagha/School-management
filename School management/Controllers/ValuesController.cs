@@ -1,9 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using School_management.Models;
-using System.Security.Claims;
 
 namespace School_management.Controllers
 {
@@ -21,13 +18,13 @@ namespace School_management.Controllers
             {
                 var db = new SchoolManagementContext();
 
-                List<Teacher> teacher = await db.Teachers.Where(t => t.Id == 2).ToListAsync();
+                List<Teacher> teacher = await db.Teachers.ToListAsync();
                 return Ok(teacher);
             }
             catch (Exception ex)
             {
                
-                return BadRequest(null);
+               return BadRequest(ex);
             }
         }
     }
