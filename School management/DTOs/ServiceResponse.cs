@@ -1,4 +1,6 @@
-﻿namespace School_management.DTOs
+﻿using School_management.Models;
+
+namespace School_management.DTOs
 {
     public class ServiceResponse<T>
     {
@@ -8,6 +10,10 @@
             Data = data;
             Success = success;
             Message = message;
+        }
+
+        public ServiceResponse(Student stu, bool v1, string v2)
+        {
         }
 
         public ServiceResponse(T data, bool success, string message, string jwt)

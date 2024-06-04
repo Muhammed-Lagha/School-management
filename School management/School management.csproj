@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Student_Controller\" />
     <Folder Include="Middleware\" />
   </ItemGroup>
 
