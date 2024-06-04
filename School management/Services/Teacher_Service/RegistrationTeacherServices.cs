@@ -10,7 +10,7 @@ namespace School_management.Services
         public static async Task<ServiceResponse<Teacher>> LoginTeacherService(string NiNo , string Password) 
         {
             Teacher teacher = await TeacherRepository.GetTeacherByNiNo(NiNo);
-            await AccessMethods.VerifyPass(teacher ,Password);
+            await AccessMethods.VerifyTeacherPass(teacher ,Password);
 
             teacher.Password = string.Empty;
             var serviceResponse = new ServiceResponse<Teacher>(teacher, true, "");

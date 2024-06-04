@@ -7,7 +7,7 @@ using School_management.Services;
 
 namespace School_management.Controllers.Teacher_Controller
 {
-    [Route("api/[controller]")]
+    [Route("api/Teachers/[controller]")]
     [ApiController]
     public class TeachersRegistrationController : ControllerBase
     {
@@ -36,24 +36,27 @@ namespace School_management.Controllers.Teacher_Controller
             {
                 var db = new SchoolManagementContext();
 
-                if (createTeacher == null)
-                {
-                    return BadRequest();
-                }
-                if (createTeacher.Id > 0)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError);
-                }
-                // await AccessMethods.GenerateHash(createTeacher.Passwrod); // <= *
-                createTeacher.Id = db.Teachers.OrderByDescending(u => u.Id ).FirstOrDefault().Id + 1;
+                string hashedPassword = AccessMethods.GenerateHash(createTeacher.Passwrod);
 
-                var serviceResponse = new ServiceResponse<CreateTeacher>(createTeacher, true, "");
+                Teacher teacher = new Teacher
+                {
+                    FirstName = createTeacher.FirstName,
+                    LastName = createTeacher.LastName,
+                    NiNo = createTeacher.NeNo,
+                    Password = hashedPassword,
+                    BirthDate = new DateOnly()
+                };
+
+                db.Add(teacher);
+
+                await db.SaveChangesAsync();
+                var serviceResponse = new ServiceResponse<Teacher>(teacher, true, "");
                 return Ok(serviceResponse);
             }
             catch (Exception ex)
             {
 
-                throw new Exception("Erorr");
+                throw new Exception("Erorr" ,ex);
             }
         }
     }

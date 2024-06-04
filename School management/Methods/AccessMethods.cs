@@ -4,9 +4,18 @@ namespace School_management.Methods
 {
     public class AccessMethods 
     {
+        public static async Task VerifyStudentPass(Student student, string clientPassword)
+        {
 
+            bool isMatch = BCrypt.Net.BCrypt.Verify(clientPassword, student.Password);
 
-        public static async Task VerifyPass(Teacher teacher, string clientPassword)
+            if (!isMatch)
+            {
+                throw new Exception("Invalid Name or Password");
+            }
+        }
+
+        public static async Task VerifyTeacherPass(Teacher teacher, string clientPassword)
         {
 
             bool isMatch = BCrypt.Net.BCrypt.Verify(clientPassword, teacher.Password);
@@ -17,7 +26,7 @@ namespace School_management.Methods
             }
         }
 
-        public string GenerateHash(string password)
+        public static string GenerateHash(string password)
         {
             string salt = BCrypt.Net.BCrypt.GenerateSalt(); 
             string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, salt);
