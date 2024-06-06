@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using School_management.DTOs;
 using School_management.DTOs.RequestDTOs;
-using School_management.Methods;
 using School_management.Models;
+using School_management.Services.Student_Service;
 
 namespace School_management.Controllers.Student_Controller
 {
@@ -17,22 +17,7 @@ namespace School_management.Controllers.Student_Controller
         {
             try
             {
-                var db = new SchoolManagementContext();
-
-                string hashedPassword = AccessMethods.GenerateHash(studentsRequests.Passwrod);
-                DateOnly birthDate = ParseDate.ParseDateOnly(studentsRequests.DateOfBirth);
-
-                Student student = new Student();
-
-                student.FirstName = studentsRequests.FirstName;
-                student.LastName = studentsRequests.LastName;
-                student.DateOfBirth = birthDate;
-                student.Password = hashedPassword;
-
-                db.Students.Add(student);
-                await db.SaveChangesAsync();
-
-                var serviceResponse = new ServiceResponse<Teacher>(student, true, "");
+                var serviceResponse = await RegistrationStudentServices.RegisterStudentServices(studentsRequests);
                 return Ok(serviceResponse);
 
             }
@@ -42,6 +27,21 @@ namespace School_management.Controllers.Student_Controller
             }
         }
 
-        
+        [HttpPost("Login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<ServiceResponse<Student>>> LoginStudent(StudentLoginRequest student)
+        {
+            try
+            {
+                var servicResponse = await RegistrationStudentServices.LoginStudentService(student.FirstName ,student.Password);
+                return Ok(student);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            
+        }
     }
 }

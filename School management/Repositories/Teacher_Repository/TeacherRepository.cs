@@ -5,14 +5,14 @@ namespace School_management.Repositories.Teacher_Repository
 {
     public class TeacherRepository
     {
-        public static async Task<Teacher> GetTeacherByNiNo(string NiNo)
+        public static async Task<Teacher> GetTeacherByUserName(string userName)
         {
             var db = new SchoolManagementContext();
-            var teacher = await db.Teachers.Where(x => x.NiNo == NiNo).FirstOrDefaultAsync();
+            var teacher = await db.Teachers.Where(x => x.Username == userName).FirstOrDefaultAsync();
 
             if (teacher == null)
             {
-                throw new Exception("Invalid NiNo or Password");
+                throw new Exception("Invalid UserName or Password");
             }
 
             return teacher;

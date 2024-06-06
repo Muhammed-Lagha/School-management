@@ -54,6 +54,8 @@ public partial class SchoolManagementContext : DbContext
 
             entity.ToTable("students");
 
+            entity.HasIndex(e => e.Username, "students_username_key").IsUnique();
+
             entity.Property(e => e.StudentId).HasColumnName("student_id");
             entity.Property(e => e.DateOfBirth).HasColumnName("date_of_birth");
             entity.Property(e => e.FirstName)
@@ -67,6 +69,9 @@ public partial class SchoolManagementContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("password");
             entity.Property(e => e.ProfilePicture).HasColumnName("profile_picture");
+            entity.Property(e => e.Username)
+                .HasMaxLength(255)
+                .HasColumnName("username");
 
             entity.HasOne(d => d.Grade).WithMany(p => p.Students)
                 .HasForeignKey(d => d.GradeId)
@@ -101,6 +106,8 @@ public partial class SchoolManagementContext : DbContext
 
             entity.ToTable("teacher");
 
+            entity.HasIndex(e => e.Username, "teacher_username_key").IsUnique();
+
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.BirthDate).HasColumnName("birth_date");
             entity.Property(e => e.FirstName)
@@ -116,6 +123,9 @@ public partial class SchoolManagementContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("password");
             entity.Property(e => e.ProfilePicture).HasColumnName("profile_picture");
+            entity.Property(e => e.Username)
+                .HasMaxLength(255)
+                .HasColumnName("username");
         });
 
         modelBuilder.Entity<TeacherGrade>(entity =>

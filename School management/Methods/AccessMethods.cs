@@ -4,25 +4,25 @@ namespace School_management.Methods
 {
     public class AccessMethods 
     {
-        public static async Task VerifyStudentPass(Student student, string clientPassword)
+        public static void VerifyStudentPass(Student student, string clientPassword)
         {
 
             bool isMatch = BCrypt.Net.BCrypt.Verify(clientPassword, student.Password);
 
             if (!isMatch)
             {
-                throw new Exception("Invalid Name or Password");
+                throw new Exception("Invalid UserName or Password");
             }
         }
 
-        public static async Task VerifyTeacherPass(Teacher teacher, string clientPassword)
+        public static void VerifyTeacherPass(Teacher teacher, string clientPassword)
         {
 
             bool isMatch = BCrypt.Net.BCrypt.Verify(clientPassword, teacher.Password);
 
             if (!isMatch)
             {
-                throw new Exception("Invalid NiNo or Password");
+                throw new Exception("Invalid UserName or Password");
             }
         }
 

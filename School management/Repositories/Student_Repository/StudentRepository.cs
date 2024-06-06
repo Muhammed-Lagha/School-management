@@ -5,13 +5,13 @@ namespace School_management.Repositories.Student_Repository
 {
     public class StudentRepository
     {
-        public static async Task<Student> GetStudentByName(string name)
+        public static async Task<Student> GetStudentByUserName(string Username)
         {
             var db = new SchoolManagementContext();
-            var student = await db.Students.Where(x => x.FirstName == name).FirstOrDefaultAsync();
+            var student = await db.Students.Where(t => t.Username == Username).FirstOrDefaultAsync();
             if (student == null)
             {
-                throw new Exception("Invalid Name or Password");
+                throw new Exception("Invalid UserName or Password");
             }
             return student;
         }

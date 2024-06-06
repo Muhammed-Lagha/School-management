@@ -19,5 +19,7 @@ public partial class Student
 
     public string Password { get; set; } = null!;
 
+    public string Username { get; set; } = null!;
+
     public virtual Grade Grade { get; set; } = null!;
 }
