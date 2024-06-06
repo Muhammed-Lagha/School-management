@@ -19,5 +19,7 @@ public partial class Teacher
 
     public string Password { get; set; } = null!;
 
+    public string Username { get; set; } = null!;
+
     public virtual ICollection<TeacherGrade> TeacherGrades { get; set; } = new List<TeacherGrade>();
 }

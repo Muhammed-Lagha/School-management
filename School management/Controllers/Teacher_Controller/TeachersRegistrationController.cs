@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using School_management.DTOs;
 using School_management.DTOs.RequestDTOs;
 using School_management.Methods;
@@ -12,11 +13,13 @@ namespace School_management.Controllers.Teacher_Controller
     public class TeachersRegistrationController : ControllerBase
     {
         [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ServiceResponse<Teacher>>> Login([FromBody] LoginTeacherRequests loginTeacherRequests)
         {
             try 
             {
-                var serviceResponseTeacher = await RegistrationTeacherServices.LoginTeacherService(loginTeacherRequests.NiNo, loginTeacherRequests.Password);
+                var serviceResponseTeacher = await RegistrationTeacherServices.LoginTeacherService(loginTeacherRequests.UserName, loginTeacherRequests.Password);
                 return Ok(serviceResponseTeacher);
             }
             catch (Exception ex) 
@@ -27,7 +30,7 @@ namespace School_management.Controllers.Teacher_Controller
         }
 
         [HttpPost("register")]
-        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ServiceResponse<Teacher>>> Registration([FromBody] CreateTeacher createTeacher)
         {
@@ -42,6 +45,7 @@ namespace School_management.Controllers.Teacher_Controller
                 {
                     FirstName = createTeacher.FirstName,
                     LastName = createTeacher.LastName,
+                    Username = createTeacher.UserName,
                     NiNo = createTeacher.NeNo,
                     Password = hashedPassword,
                     BirthDate = birthDate,
@@ -57,6 +61,27 @@ namespace School_management.Controllers.Teacher_Controller
             {
 
                 return BadRequest(ex);
+            }
+        }
+
+        [HttpGet("check-username/{username}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<bool>> CheckUsernameExists(string username)
+        {
+            try
+            {
+                var db = new SchoolManagementContext();
+                var teacher = await db.Teachers.FirstOrDefaultAsync(t => t.Username == username);
+                if (teacher == null)
+                {
+                    return NotFound(false);
+                }
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
     }
