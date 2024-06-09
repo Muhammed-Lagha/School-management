@@ -28,15 +28,17 @@ namespace School_management.Services.Student_Service
             string hashedPassword = AccessMethods.GenerateHash(studentsRequests.Passwrod);
             DateOnly birthDate = ParseDate.ParseDateOnly(studentsRequests.DateOfBirth);
 
-            Student student = new Student();
+            Student student = new Student
+            {
+                FirstName = studentsRequests.FirstName,
+                LastName = studentsRequests.LastName,
+                Username = studentsRequests.UserName,
+                Password = hashedPassword,
+                DateOfBirth = birthDate,
+                GradeId = studentsRequests.GradeId,
+            };
 
-            student.FirstName = studentsRequests.FirstName;
-            student.LastName = studentsRequests.LastName;
-            student.Username = studentsRequests.UserName;
-            student.DateOfBirth = birthDate;
-            student.Password = hashedPassword;
-
-            db.Students.Add(student);
+            db.Add(student);
             await db.SaveChangesAsync();
 
             var serviceResponse = new ServiceResponse<Student>(student, true, "");
