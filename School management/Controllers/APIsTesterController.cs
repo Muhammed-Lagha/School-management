@@ -10,7 +10,7 @@ namespace School_management.Controllers
     public class APIsTesterController : ControllerBase
     {
 
-        //  Bearer 
+        //  Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VyTmFtZSI6IkFsaTEyIiwiZXhwIjoxNzE3ODg0MTI2fQ.O6Hss-912ZybVD2vNdtvBmlpHJfUdQzNhEy4yMZkJLT3t6Xdu1iLn8gymmCIAdvmthCM56MpfXrxUceIZ3y8nw
         //  172737737
         [HttpPost("GetAllTeachers")]
         [Authorize()]
@@ -44,6 +44,20 @@ namespace School_management.Controllers
             catch (Exception ex)
             {
 
+                return BadRequest(ex);
+            }
+        }
+        [HttpGet("GetStudentById/{id}")]
+        [Authorize()]
+        public async Task<ActionResult<Student>> GetStudentById(int id)
+        {
+            try
+            {
+                var db = new SchoolManagementContext();
+                Student student = await db.Students.FirstOrDefaultAsync(t => t.StudentId == id);
+                return Ok(student);
+            }catch(Exception ex)
+            {
                 return BadRequest(ex);
             }
         }
