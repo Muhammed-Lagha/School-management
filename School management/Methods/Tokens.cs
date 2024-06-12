@@ -37,10 +37,8 @@ namespace DeviseHR_Server.Common
                 {
                     new Claim("id", teacher.Id.ToString()),
                     new Claim("userName", teacher.Username.ToString()),
+                    new Claim(ClaimTypes.Role ,"Teacher")
                 };
-            
-           
-
             return claims;
         }
 
@@ -74,10 +72,7 @@ namespace DeviseHR_Server.Common
                 {
                     new Claim("id", student.StudentId.ToString()),
                     new Claim("userName", student.Username.ToString()),
-                };
-
-
-
+                }; 
             return claims;
         }
     }

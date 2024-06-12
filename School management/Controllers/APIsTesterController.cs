@@ -10,10 +10,10 @@ namespace School_management.Controllers
     public class APIsTesterController : ControllerBase
     {
 
-        //  Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEiLCJ1c2VyTmFtZSI6IkFsaTEyIiwiZXhwIjoxNzE3ODg0MTI2fQ.O6Hss-912ZybVD2vNdtvBmlpHJfUdQzNhEy4yMZkJLT3t6Xdu1iLn8gymmCIAdvmthCM56MpfXrxUceIZ3y8nw
+        //  Bearer eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjgiLCJ1c2VyTmFtZSI6IkFsbGFkYWEiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJUZWFjaGVyIiwiZXhwIjoxNzE4MTQ0MzE4fQ.yyESwFev_I6Z9v1z8PQf27YyxYSFFbcxCUXx4M4AeJADtspTcD1VeZopYaWSgODScvtrpqxHFWhsEl7GErGsrw
         //  172737737
-        [HttpPost("GetAllTeachers")]
-        [Authorize()]
+        [HttpPost("GetAllTeachers"), Authorize(Roles = "Teacher")]
+        
         public async Task<ActionResult<List<Teacher>>> GetAllTeachers()
         {
             try
@@ -47,18 +47,35 @@ namespace School_management.Controllers
                 return BadRequest(ex);
             }
         }
-        [HttpGet("GetStudentById/{id}")]
+        [HttpGet("GetStudentById/{id}") , Authorize(Roles = "Teacher")]
         [Authorize()]
         public async Task<ActionResult<Student>> GetStudentById(int id)
         {
             try
             {
                 var db = new SchoolManagementContext();
-                Student student = await db.Students.FirstOrDefaultAsync(t => t.StudentId == id);
+                //if (id == null) return BadRequest("");
+
+                var student = await db.Students.FirstOrDefaultAsync(t => t.StudentId == id);
                 return Ok(student);
             }catch(Exception ex)
             {
                 return BadRequest(ex);
+            }
+        }
+
+        [HttpGet("GetAllGrades") ,Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<List<Grade>>> GetAllGrades()
+        {
+            try
+            {
+                var db = new SchoolManagementContext();
+                var grade = await db.Grades.ToListAsync();
+                return Ok(grade);
+            }
+            catch(Exception e)
+            {
+                return BadRequest($"{e.Message}");
             }
         }
     }
