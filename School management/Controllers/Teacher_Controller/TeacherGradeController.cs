@@ -42,7 +42,6 @@ namespace School_management.Controllers.Teacher_Controller
             {
                 var db = new SchoolManagementContext();
 
-                // Find the subject to be updated 
                 var grade = await db.Grades.FindAsync(id);
 
                 if (grade == null)
@@ -50,11 +49,9 @@ namespace School_management.Controllers.Teacher_Controller
                     return NotFound($"grade with ID {id} not found.");
                 }
 
-                // Update the subject properties
                 grade.Name = updateGradeRequest.GradeName;
                 grade.GradeNumber = updateGradeRequest.GradeNumber;
 
-                // Save the changes to the database
                 await db.SaveChangesAsync();
 
                 var serviceResponse = new ServiceResponse<Grade>(grade, true, "");
