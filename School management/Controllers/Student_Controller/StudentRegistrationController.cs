@@ -12,6 +12,13 @@ namespace School_management.Controllers.Student_Controller
     [ApiController]
     public class StudentRegistrationController : ControllerBase
     {
+        private readonly SchoolManagementContext _db;
+
+        public StudentRegistrationController(SchoolManagementContext db)
+        {
+            _db = db;
+        }
+
         [HttpPost("register")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -52,8 +59,8 @@ namespace School_management.Controllers.Student_Controller
         {
             try
             {
-                var db = new SchoolManagementContext();
-                var teacher = await db.Students.FirstOrDefaultAsync(t => t.Username == username);
+                
+                var teacher = await _db.Students.FirstOrDefaultAsync(t => t.Username == username);
                 if (teacher == null)
                 {
                     return NotFound(false);
