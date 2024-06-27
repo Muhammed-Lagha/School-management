@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Crypto;
 using School_management.DTOs;
 using School_management.DTOs.RequestDTOs;
 using School_management.Models;
@@ -11,20 +12,24 @@ namespace School_management.Controllers.Teacher_Controller
     
     public class TeacherGradeController : ControllerBase
     {
+        private readonly SchoolManagementContext _db;
+        public TeacherGradeController (SchoolManagementContext db)
+        {
+            _db = db;
+        }
+
         [HttpPost("CreateGrade") , Authorize(Roles = "Teacher")]
-        public ActionResult<ServiceResponse<Grade>> CreateGrade(CreateGradeRequests gradeRequests)
+        public async Task<ActionResult<ServiceResponse<Grade>>> CreateGrade(CreateGradeRequests gradeRequests)
         {
             try
             {
-                var db = new SchoolManagementContext();
-
                 Grade grade = new Grade {
                     GradeNumber = gradeRequests.GradeNumber,
-                    Name = gradeRequests.GradeName
+                    Name = gradeRequests.GradeName,
                 };
 
-                db.Add(grade);
-                db.SaveChanges();
+                _db.Add(grade);
+                await _db.SaveChangesAsync();
 
                 var serviceResponse = new ServiceResponse<Grade>(grade, true, "");
                 return Ok(serviceResponse);
@@ -40,9 +45,7 @@ namespace School_management.Controllers.Teacher_Controller
         {
             try
             {
-                var db = new SchoolManagementContext();
-
-                var grade = await db.Grades.FindAsync(id);
+                var grade = await _db.Grades.FindAsync(id);
 
                 if (grade == null)
                 {
@@ -52,7 +55,7 @@ namespace School_management.Controllers.Teacher_Controller
                 grade.Name = updateGradeRequest.GradeName;
                 grade.GradeNumber = updateGradeRequest.GradeNumber;
 
-                await db.SaveChangesAsync();
+                await _db.SaveChangesAsync();
 
                 var serviceResponse = new ServiceResponse<Grade>(grade, true, "");
                 return Ok(serviceResponse);

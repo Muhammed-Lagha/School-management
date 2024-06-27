@@ -10,13 +10,18 @@ namespace School_management.Controllers.Teacher_Controller
     [ApiController ,Authorize]
     public class TeacherSubjectController : ControllerBase
     {
+        private readonly SchoolManagementContext _db;
+
+        public TeacherSubjectController (SchoolManagementContext db)
+        {
+            _db = db;
+        }
+
         [HttpPost("CreateSubject"), Authorize(Roles = "Teacher")]
         public async Task<ActionResult<ServiceResponse<Subject>>> CreateSubject([FromBody] CreateSubjectRequests createSubject)
         {
             try 
             {
-                var db = new SchoolManagementContext();
-
                 if (createSubject == null)
                 {
                     throw new ArgumentNullException(nameof(createSubject));
@@ -29,8 +34,8 @@ namespace School_management.Controllers.Teacher_Controller
                     GradeNumber = createSubject.GradeNumber
                 };
 
-                db.Subjects.Add(subject);
-                await db.SaveChangesAsync();
+                _db.Subjects.Add(subject);
+                await _db.SaveChangesAsync();
 
                 var serviceResponse = new ServiceResponse<Subject>(subject ,true ,"");
                 return Ok(serviceResponse);
@@ -47,10 +52,8 @@ namespace School_management.Controllers.Teacher_Controller
         {
             try
             {
-                var db = new SchoolManagementContext();
-
                 // Find the subject to be updated 
-                var subject = await db.Subjects.FindAsync(id);
+                var subject = await _db.Subjects.FindAsync(id);
 
                 if (subject == null)
                 {
@@ -63,7 +66,7 @@ namespace School_management.Controllers.Teacher_Controller
                 subject.GradeNumber = updateSubjectRequest.GradeNumber;
 
                 // Save the changes to the database
-                await db.SaveChangesAsync();
+                await _db.SaveChangesAsync();
 
                 var serviceResponse = new ServiceResponse<Subject>(subject, true, "");
                 return Ok(serviceResponse);
