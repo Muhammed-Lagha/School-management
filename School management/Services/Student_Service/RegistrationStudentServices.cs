@@ -7,9 +7,9 @@ using School_management.Repositories.Student_Repository;
 
 namespace School_management.Services.Student_Service
 {
+
     public class RegistrationStudentServices
     {
-        public RegistrationStudentServices() { }
         public static async Task<ServiceResponse<Student>> LoginStudentService(string UserName, string Password)
         {
             Student stu = await StudentRepository.GetStudentByUserName(UserName);

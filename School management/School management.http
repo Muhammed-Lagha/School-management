@@ -1,6 +1,12 @@
+@School management_HostAddress = https://localhost:7099
 @School_management_HostAddress = http://localhost:5219
 
 GET {{School_management_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+POST {{School management_HostAddress}}/api/apistester/GetAllTeachers
 Accept: application/json
 
 ###
