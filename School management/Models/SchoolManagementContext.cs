@@ -28,8 +28,9 @@ public partial class SchoolManagementContext : DbContext
     public virtual DbSet<Timetable> Timetables { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=SchoolManagement;Username=postgres;Password=muhammed123;");
+    {
+        optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=SchoolManagement;Username=postgres;Password=muhammed123;");
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -157,12 +158,17 @@ public partial class SchoolManagementContext : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.DayOfWeek).HasColumnName("day_of_week");
+            entity.Property(e => e.GradeId).HasColumnName("grade_id");
             entity.Property(e => e.Period1SubjectId).HasColumnName("period_1_subject_id");
             entity.Property(e => e.Period2SubjectId).HasColumnName("period_2_subject_id");
             entity.Property(e => e.Period3SubjectId).HasColumnName("period_3_subject_id");
             entity.Property(e => e.Period4SubjectId).HasColumnName("period_4_subject_id");
             entity.Property(e => e.Period5SubjectId).HasColumnName("period_5_subject_id");
             entity.Property(e => e.Period6SubjectId).HasColumnName("period_6_subject_id");
+
+            entity.HasOne(d => d.Grade).WithMany(p => p.Timetables)
+                .HasForeignKey(d => d.GradeId)
+                .HasConstraintName("fk_grade");
 
             entity.HasOne(d => d.Period1Subject).WithMany(p => p.TimetablePeriod1Subjects)
                 .HasForeignKey(d => d.Period1SubjectId)

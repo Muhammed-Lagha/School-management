@@ -16,4 +16,6 @@ public partial class Grade
     public virtual ICollection<Subject> Subjects { get; set; } = new List<Subject>();
 
     public virtual ICollection<TeacherGrade> TeacherGrades { get; set; } = new List<TeacherGrade>();
+
+    public virtual ICollection<Timetable> Timetables { get; set; } = new List<Timetable>();
 }

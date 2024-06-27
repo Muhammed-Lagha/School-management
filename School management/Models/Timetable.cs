@@ -21,6 +21,10 @@ public partial class Timetable
 
     public int Period6SubjectId { get; set; }
 
+    public int? GradeId { get; set; }
+
+    public virtual Grade? Grade { get; set; }
+
     public virtual Subject Period1Subject { get; set; } = null!;
 
     public virtual Subject Period2Subject { get; set; } = null!;
